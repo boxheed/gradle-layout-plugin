@@ -17,6 +17,7 @@ apply plugin: 'maven'
 apply plugin: 'cobertura'
 apply plugin: 'pl.allegro.tech.build.axion-release'
 apply plugin: 'com.fizzpod.info'
+apply plugin: 'com.fizzpod.layout'
 //apply from: 'buildSrc/build.gradle'
 
 repositories {
@@ -77,3 +78,5 @@ cobertura {
 
 test.finalizedBy(project.tasks.cobertura)
 
+layout {
+}
