@@ -17,7 +17,6 @@ apply plugin: 'maven'
 apply plugin: 'cobertura'
 apply plugin: 'pl.allegro.tech.build.axion-release'
 apply plugin: 'com.fizzpod.info'
-apply plugin: 'com.fizzpod.layout'
 
 repositories {
 	mavenLocal()
@@ -33,31 +32,6 @@ scmVersion {
 
 group = 'com.fizzpod'
 version = scmVersion.version
-
-sourceSets {
-    main {
-        java {
-            srcDir 'buildSrc/src/main/java'
-        }
-        resources {
-            srcDir 'buildSrc/src/main/resources'
-        }
-		groovy {
-		    srcDir 'buildSrc/src/main/groovy'
-		}
-	}
-	test {
-        java {
-            srcDir 'buildSrc/src/test/java'
-        }
-        resources {
-            srcDir 'buildSrc/src/test/resources'
-        }
-		groovy {
-		    srcDir 'buildSrc/src/test/groovy'
-		}
-	}
-}
 
 dependencies {
 	compile gradleApi()
