@@ -9,9 +9,13 @@ class LayoutPlugin implements Plugin<Project> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LayoutPlugin.class);
 	
-		void apply(Project project) {
-			project.extensions.create("layout", LayoutPluginExtension);
-//			project.task([group: 'layout'], 'writeGitignore') << {
+	void apply(Project project) {
+		project.extensions.create("layout", LayoutPluginExtension);
+		project.task([group: 'layout'], 'createLayout') << {
+			project.layout.layouts.each {
+				it.write(project.rootDir)
+			}
+		}
 //				GitignoreFile gitignoreFile = new GitignoreFile();
 //				LOGGER.info(".gitignore contents before writing: ");
 //				LOGGER.info(gitignoreFile.getContents(project.getRootDir()));
@@ -28,5 +32,5 @@ class LayoutPlugin implements Plugin<Project> {
 //					println ".gitignore file is either empty or does not exist.";
 //				}
 //			}
-		}
+	}
 }
