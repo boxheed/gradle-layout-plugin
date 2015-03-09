@@ -16,21 +16,5 @@ class LayoutPlugin implements Plugin<Project> {
 				it.write(project.rootDir)
 			}
 		}
-//				GitignoreFile gitignoreFile = new GitignoreFile();
-//				LOGGER.info(".gitignore contents before writing: ");
-//				LOGGER.info(gitignoreFile.getContents(project.getRootDir()));
-//				gitignoreFile.writeContents(project.getRootDir(), project.gitignore.ignores);
-//				LOGGER.info(".gitignore contents after writing: ");
-//				LOGGER.info(gitignoreFile.getContents(project.getRootDir()));
-//			}
-//			
-//			project.task([group: 'gitignore'], 'displayGitignore') << {
-//				String contents = new GitignoreFile().getContents(project.getRootDir());
-//				if(contents) {
-//					println contents;
-//				} else {
-//					println ".gitignore file is either empty or does not exist.";
-//				}
-//			}
 	}
 }
