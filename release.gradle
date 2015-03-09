@@ -21,9 +21,9 @@ plugindev {
     pluginDescription 'Gradle plugin to providing configuration mechanism to create a layout.'
     pluginLicenses 'Apache-2.0'
     pluginTags 'gradle', 'plugin', 'layout',
-    authorId '$BINTRAY_USER'
-    authorName '$BINTRAY_AUTHOR'
-    authorEmail '$BINTRAY_EMAIL'
+    authorId '$System.env.BINTRAY_USER'
+    authorName '$System.env.BINTRAY_AUTHOR'
+    authorEmail '$System.env.BINTRAY_EMAIL'
     projectUrl 'https://github.com/boxheed/gradle-layout-plugin'
 	projectIssuesUrl 'https://github.com/boxheed/gradle-layout-plugin/issues'
 	projectVcsUrl 'https://github.com/boxheed/gradle-layout-plugin.git'
@@ -32,7 +32,7 @@ plugindev {
 }
 
 bintray {
-    user = "$BINTRAY_USER"
-    key = "$BINTRAY_KEY"
+    user = "$System.env.BINTRAY_USER"
+    key = "$System.env.BINTRAY_KEY"
     pkg.repo = 'gradle-plugins'
 }
