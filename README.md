@@ -1,3 +1,4 @@
+[![Build Status](https://api.shippable.com/projects/54fcdb365ab6cc13529548b3/badge?branchName=master)](https://app.shippable.com/projects/54fcdb365ab6cc13529548b3/builds/latest)
 # Gradle Layout Plugin
 A Gradle plugin providing the ability to specify the folder and file layout of the project, optionally including the contents of file.
 
