@@ -13,7 +13,7 @@ plugins {
 	id 'nu.studer.plugindev' version '1.0.3'
 }
 
-apply from: 'file:/./build.gradle'
+apply from: 'file:build.gradle'
 
 plugindev {
 	pluginId 'com.fizzpod.layout'
