@@ -17,12 +17,22 @@ class LayoutFile {
 	public File write(def root) {
 		def layoutFile = new File(root, file);
 		if(!layoutFile.exists()) {
-			layoutFile.createNewFile();
-			if(contents) {
-				layoutFile.write(contents())
+			if(createDirs(layoutFile.getParentFile())) {
+				layoutFile.createNewFile();
+				if(contents) {
+					layoutFile.write(contents())
+				}
 			}
 		}
 		return layoutFile
+	}
+	
+	private boolean createDirs(File dir) {
+		boolean exists = true;
+		if(!dir.exists()) {
+			exists = dir.mkdirs();
+		}
+		return exists
 	}
 	
 }
