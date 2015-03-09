@@ -56,5 +56,18 @@ class LayoutPathSpec extends Specification {
 			existingFile.isFile()
 	}
 	
-	
+	def "create path with file in sub folder position"() {
+		setup:
+		def file = temporaryFolder.newFile("file1");
+		when:
+			def layoutPath = new LayoutPath("/file1/folder1_1");
+		then:
+			layoutPath.write(temporaryFolder.getRoot());
+		expect:
+			File existingFile = new File(temporaryFolder.getRoot(), "file1")
+			existingFile.exists()
+			existingFile.isFile()
+			File newFolder = new File(temporaryFolder.getRoot(), "file1/folder1")
+			!newFolder.exists();
+	}
 }
