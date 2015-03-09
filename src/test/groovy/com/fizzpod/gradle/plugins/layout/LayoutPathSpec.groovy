@@ -18,6 +18,7 @@ class LayoutPathSpec extends Specification {
 		expect:
 			File folder = new File(temporaryFolder.getRoot(), "folder1");
 			folder.exists();
+			folder.isDirectory();
 	}
 	
 	def "create path with forward slash at start"() {
@@ -28,6 +29,7 @@ class LayoutPathSpec extends Specification {
 		expect:
 			File folder = new File(temporaryFolder.getRoot(), "folder1");
 			folder.exists();
+			folder.isDirectory();
 	}
 	
 	def "create path with multiple subfolders"() {
@@ -36,8 +38,23 @@ class LayoutPathSpec extends Specification {
 		then:
 			layoutPath.write(temporaryFolder.getRoot());
 		expect:
-			File folder = new File(temporaryFolder.getRoot(), "/folder1/folder1_1/folder1_1_1");
+			File folder = new File(temporaryFolder.getRoot(), "folder1/folder1_1/folder1_1_1");
 			folder.exists(); 
+			folder.isDirectory();
 	}
+	
+	def "create path with file in the way"() {
+		setup: 
+			def file = temporaryFolder.newFile("file1");
+		when:
+			def layoutPath = new LayoutPath("/file1");
+		then:
+			layoutPath.write(temporaryFolder.getRoot());
+		expect:
+			File existingFile = new File(temporaryFolder.getRoot(), "file1")
+			existingFile.exists()
+			existingFile.isFile()
+	}
+	
 	
 }
