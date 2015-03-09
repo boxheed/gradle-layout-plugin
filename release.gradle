@@ -1,0 +1,33 @@
+buildscript {
+	repositories {
+		jcenter()
+	}
+}
+
+plugins {
+	id 'nu.studer.plugindev' version '1.0.3'
+}
+
+apply from: 'file:/./build.gradle'
+
+plugindev {
+	pluginId 'com.fizzpod.layout'
+    pluginImplementationClass 'com.fizzpod.gradle.plugins.layout.LayoutPlugin'
+    pluginDescription 'Gradle plugin to providing configuration mechanism to create a layout.'
+    pluginLicenses 'Apache-2.0'
+    pluginTags 'gradle', 'plugin', 'layout',
+    authorId '$BINTRAY_USER'
+    authorName '$BINTRAY_AUTHOR'
+    authorEmail '$BINTRAY_EMAIL'
+    projectUrl 'https://github.com/boxheed/gradle-layout-plugin'
+	projectIssuesUrl 'https://github.com/boxheed/gradle-layout-plugin/issues'
+	projectVcsUrl 'https://github.com/boxheed/gradle-layout-plugin.git'
+    projectInceptionYear '2015'
+    done() // do not omit this
+}
+
+bintray {
+    user = "$BINTRAY_USER"
+    key = "$BINTRAY_KEY"
+    pkg.repo = 'gradle-plugins'
+}
