@@ -1,7 +1,13 @@
 package com.fizzpod.gradle.plugins.layout
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
+
 class LayoutFile {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(LayoutFile.class);
+	
 	def file
 	def contents
 	
@@ -16,6 +22,8 @@ class LayoutFile {
 	
 	public File write(def root) {
 		def layoutFile = new File(root, file);
+		LOGGER.info("Creating file {}", layoutFile)
+		
 		if(!layoutFile.exists()) {
 			if(createDirs(layoutFile.getParentFile())) {
 				layoutFile.createNewFile();
