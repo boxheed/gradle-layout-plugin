@@ -23,6 +23,7 @@ before_script:
   
 script:
   - ./gradlew clean build
+  - git remote set-url origin git@github.com:boxheed/gradle-layout-plugin.git
   - set -e; if [ "$HEAD_BRANCH" == "master" ]; then ./gradlew clean verifyRelease createRelease; git push --tags; fi
   #./gradlew -b release.gradle clean build publishPluginToBintray; fi
   
