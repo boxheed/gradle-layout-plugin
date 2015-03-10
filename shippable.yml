@@ -22,8 +22,9 @@ before_script:
   - mkdir -p shippable/artifacts
   
 script:
-  - ./gradlew clean build
-  - if [ "$HEAD_BRANCH" == "master" ]; then set -e; ./gradlew clean verifyRelease createRelease; ssh-agent bash -c "ssh-add ~/.ssh/project_rsa; git push --tags"; fi
+  - cat ~/.ssh/project_rsa.pub
+  #- ./gradlew clean build
+  #- if [ "$HEAD_BRANCH" == "master" ]; then set -e; ./gradlew clean verifyRelease createRelease; ssh-agent bash -c "ssh-add ~/.ssh/project_rsa; git push --tags"; fi
   #./gradlew -b release.gradle clean build publishPluginToBintray; fi
   
 after_script:
