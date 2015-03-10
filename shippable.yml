@@ -22,9 +22,8 @@ before_script:
   - mkdir -p shippable/artifacts
   
 script:
-  - chmod +x gradlew
   - ./gradlew clean build
-  - if [ "$BRANCH" == "master" ]; then ./gradlew -b release.gradle clean release; ./gradlew -b release.gradle clean publishPluginToBintray; fi
+  - if [ "$BRANCH" == "master" ]; then ./gradlew -b release.gradle clean verifyRelease; fi
   
 after_script:
   - cp -R ./build/test-results/* ./shippable/testresults
