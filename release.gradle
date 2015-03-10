@@ -13,17 +13,17 @@ plugins {
 	id 'nu.studer.plugindev' version '1.0.3'
 }
 
-apply from: 'file:build.gradle'
+apply from: 'build.gradle'
 
 plugindev {
 	pluginId 'com.fizzpod.layout'
     pluginImplementationClass 'com.fizzpod.gradle.plugins.layout.LayoutPlugin'
     pluginDescription 'Gradle plugin to providing configuration mechanism to create a layout.'
     pluginLicenses 'Apache-2.0'
-    pluginTags 'gradle', 'plugin', 'layout',
-    authorId '$System.env.BINTRAY_USER'
-    authorName '$System.env.BINTRAY_AUTHOR'
-    authorEmail '$System.env.BINTRAY_EMAIL'
+    pluginTags 'gradle', 'plugin', 'layout', 'template'
+    authorId System.env.BINTRAY_USER
+    authorName System.env.BINTRAY_AUTHOR
+    authorEmail System.env.BINTRAY_EMAIL
     projectUrl 'https://github.com/boxheed/gradle-layout-plugin'
 	projectIssuesUrl 'https://github.com/boxheed/gradle-layout-plugin/issues'
 	projectVcsUrl 'https://github.com/boxheed/gradle-layout-plugin.git'
@@ -32,7 +32,7 @@ plugindev {
 }
 
 bintray {
-    user = "$System.env.BINTRAY_USER"
-    key = "$System.env.BINTRAY_KEY"
+    user = System.env.BINTRAY_USER
+    key = System.env.BINTRAY_KEY
     pkg.repo = 'gradle-plugins'
 }
