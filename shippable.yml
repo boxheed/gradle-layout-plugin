@@ -24,7 +24,7 @@ before_script:
 script:
   - chmod +x gradlew
   - ./gradlew clean build
-  - if [ "$BRANCH" == master ]; then ./gradlew -b release.gradle tasks;
+  - if [ "$BRANCH" == "master" ]; then ./gradlew -b release.gradle tasks;
   
 after_script:
   - cp -R ./build/test-results/* ./shippable/testresults
