@@ -23,7 +23,7 @@ before_script:
   
 script:
   - ./gradlew clean build
-  - if [ "$HEAD_BRANCH" == "master" ]; then set -e; ./gradlew clean verifyRelease createRelease; git push --tags; ./gradlew -b release.gradle clean build publishPluginToBintray; fi
+  - if [ "$HEAD_BRANCH" == "master" ]; then set -e; ./gradlew clean verifyRelease createRelease; ssh-agent bash -c "ssh-add ~/keys/id_${JOB_ID}; git push --tags"; ./gradlew -b release.gradle clean build publishPluginToBintray; fi
   
 after_script:
   - cp -R ./build/test-results/* ./shippable/testresults
