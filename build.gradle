@@ -39,20 +39,20 @@ bintray {
 	dryRun = false
 	publish = true
 	pkg {
-		labels = ['gradle', 'plugin', 'git', 'build', 'gitignore']
+		labels = ['gradle', 'plugin', 'layout', 'template']
 	}
 }
 
 pluginBundle {
 
-  description = 'Gradle plugin providing a way of configuring default gitignore values.'
-  tags = ['gradle', 'plugin', 'git', 'build', 'gitignore']
+	description = 'Gradle plugin to providing configuration mechanism to create a layout.'
+  tags = ['gradle', 'plugin', 'layout', 'template']
 
   plugins {
 
     plugin {
-      id = 'com.fizzpod.gitignore'
-      displayName = 'Gradle Gitignore plugin'
+      id = 'com.fizzpod.layout'
+      displayName = 'Gradle Layout Plugin'
     }
   }
 }
