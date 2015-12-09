@@ -11,28 +11,42 @@ buildscript {
 	}
 	dependencies {
 		classpath ('com.fizzpod:gradle-plugin-opinion:2.0.1') {
-			//TODO need to add this back in but it means moving the source.
-			//See the gitignore plugin
-			//exclude group: 'com.fizzpod', module: 'gradle-layout-plugin'
+			exclude group: 'com.fizzpod', module: 'gradle-layout-plugin'
 		}
 	}
 }
 
 apply plugin: 'com.fizzpod.pater-build'
+apply from: 'buildSrc/build.gradle'
 
-
-repositories {
-	mavenLocal()
-	jcenter()
+sourceSets {
+    main {
+        java {
+            srcDir 'buildSrc/src/main/java'
+        }
+        resources {
+            srcDir 'buildSrc/src/main/resources'
+        }
+		groovy {
+		    srcDir 'buildSrc/src/main/groovy'
+		}
+	}
+	test {
+        java {
+            srcDir 'buildSrc/src/test/java'
+        }
+        resources {
+            srcDir 'buildSrc/src/test/resources'
+        }
+		groovy {
+		    srcDir 'buildSrc/src/test/groovy'
+		}
+	}
 }
-
 
 dependencies {
 	compile gradleApi()
 	compile localGroovy()
-	testCompile('com.netflix.nebula:nebula-test:4.0.+') {
-    exclude group: 'org.codehaus.groovy'
-  }
 }
 
 bintray {
