@@ -2,24 +2,24 @@ buildscript {
 	repositories {
 		mavenLocal()
 		jcenter()
+		maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+		maven {
+			url "https://dl.bintray.com/boxhead/maven/"
+		}
 	}
 	dependencies {
-        classpath 'pl.allegro.tech.build:axion-release-plugin:1.2.2'
-		classpath 'net.saliman:gradle-cobertura-plugin:2.2.7'
-		classpath 'com.fizzpod:gradle-extended-info-plugin:0.1.4'
-		classpath 'com.fizzpod:gradle-sweeney-plugin:1.0.0'
-    }
+		classpath ('com.fizzpod:gradle-plugin-opinion:2.0.1') {
+			//TODO need to add this back in but it means moving the source.
+			//See the gitignore plugin
+			//exclude group: 'com.fizzpod', module: 'gradle-layout-plugin'
+		}
+	}
 }
 
-apply plugin: 'groovy'
-apply plugin: 'java-gradle-plugin'
-apply plugin: 'eclipse'
-apply plugin: 'maven'
-apply plugin: 'cobertura'
-apply plugin: 'pl.allegro.tech.build.axion-release'
-apply plugin: 'com.fizzpod.info'
-apply plugin: 'com.fizzpod.sweeney'
-apply plugin: 'project-report'
+apply plugin: 'com.fizzpod.pater-build'
+
 
 repositories {
 	mavenLocal()
@@ -27,39 +27,32 @@ repositories {
 }
 
 
-scmVersion {
-    tag {
-        prefix = 'release'
-    }
-}
-
-group = 'com.fizzpod'
-version = scmVersion.version
-
-sweeney {
-	enforce 'jdk:[1.7,)'
-	enforce 'gradle:[2.2,)'
-}
-
-
 dependencies {
 	compile gradleApi()
 	compile localGroovy()
-	
-	testCompile('com.netflix.nebula:nebula-test:2.2.+') {
-        exclude group: 'org.codehaus.groovy'
+	testCompile('com.netflix.nebula:nebula-test:4.0.+') {
+    exclude group: 'org.codehaus.groovy'
+  }
+}
+
+bintray {
+	dryRun = false
+	publish = true
+	pkg {
+		labels = ['gradle', 'plugin', 'git', 'build', 'gitignore']
+	}
+}
+
+pluginBundle {
+
+  description = 'Gradle plugin providing a way of configuring default gitignore values.'
+  tags = ['gradle', 'plugin', 'git', 'build', 'gitignore']
+
+  plugins {
+
+    plugin {
+      id = 'com.fizzpod.gitignore'
+      displayName = 'Gradle Gitignore plugin'
     }
+  }
 }
-
-artifacts {
-	jar
-}
-
-cobertura {
-    coverageFormats = ['html', 'xml']				
-    coverageIgnoreTrivial = true					
-    coverageIgnores = ['org.slf4j.Logger.*']			
-    coverageReportDir = new File("$buildDir/reports/cobertura")	
-}
-
-test.finalizedBy(project.tasks.cobertura)
