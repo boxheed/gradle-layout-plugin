@@ -59,7 +59,7 @@ bintray {
 
 pluginBundle {
 
-	description = 'Gradle plugin to providing configuration mechanism to create a layout.'
+	description = 'Gradle plugin providing a configuration mechanism to create standardised layouts.'
   tags = ['gradle', 'plugin', 'layout', 'template']
 
   plugins {
