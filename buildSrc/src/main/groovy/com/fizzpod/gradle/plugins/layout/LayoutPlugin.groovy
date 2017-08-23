@@ -8,10 +8,10 @@ import org.slf4j.LoggerFactory
 class LayoutPlugin implements Plugin<Project> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LayoutPlugin.class);
-	
+
 	void apply(Project project) {
 		project.extensions.create("layout", LayoutPluginExtension);
-		project.task([group: 'layout'], 'createLayout') << {
+		project.task([group: 'layout'], 'createLayout').doLast {
 			project.layout.layouts.each {
 				it.write(project.rootDir)
 			}
