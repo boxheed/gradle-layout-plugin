@@ -10,7 +10,7 @@ buildscript {
 		}
 	}
 	dependencies {
-		classpath ('com.fizzpod:gradle-plugin-opinion:2.0.1') {
+		classpath ('com.fizzpod:gradle-plugin-opinion:5.0.2') {
 			exclude group: 'com.fizzpod', module: 'gradle-layout-plugin'
 		}
 	}
@@ -59,7 +59,7 @@ bintray {
 
 pluginBundle {
 
-	description = 'Gradle plugin to providing configuration mechanism to create a layout.'
+	description = 'Gradle plugin providing a configuration mechanism to create standardised layouts.'
   tags = ['gradle', 'plugin', 'layout', 'template']
 
   plugins {

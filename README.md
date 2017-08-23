@@ -9,7 +9,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        //The gitignore plugin.
+        //The layout plugin.
         classpath 'com.fizzpod:gradle-layout-plugin:0+'
     }
 }
@@ -28,7 +28,7 @@ layout {
     // Create a file in a subfolder with a multiline content
     file ('folder1/folder1_1/filename4.txt') {
         """I am some content
-Split over 
+Split over
 multiple lines"""
     }
     path 'folder2/folder2_1'
