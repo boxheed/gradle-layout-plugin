@@ -10,9 +10,9 @@ class LayoutPlugin implements Plugin<Project> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(LayoutPlugin.class);
 
 	void apply(Project project) {
-		project.extensions.create("layout", LayoutPluginExtension);
+		def layoutPluginExtension = project.extensions.create("layout", LayoutPluginExtension);
 		project.task([group: 'layout'], 'createLayout').doLast {
-			project.layout.layouts.each {
+			layoutPluginExtension.layouts.each {
 				it.write(project.rootDir)
 			}
 		}
