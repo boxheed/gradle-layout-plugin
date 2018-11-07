@@ -19,6 +19,9 @@ public class LayoutPluginExtension {
 		return this;
 	}
 	
-	
+	def url(def url) {
+		layouts << new LayoutDescriptor(url)
+		return this;
+	}
 	
 }
