@@ -1,3 +1,3 @@
 layout {
-	file 'filename1.txt'
+	layout.file 'filename1.txt'
 }
