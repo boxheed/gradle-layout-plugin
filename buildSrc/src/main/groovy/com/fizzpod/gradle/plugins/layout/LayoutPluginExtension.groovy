@@ -24,4 +24,18 @@ public class LayoutPluginExtension {
 		return this;
 	}
 	
+	def call() {
+		println "called 1"
+	}
+	
+	def call(Object... args) {
+		println "called 2"
+	}
+	
+	def call(Closure closure) {
+		println "called 3 " + closure + " " + layouts
+		closure.setDelegate(this)
+		closure.call()
+		println "called 3 " + closure + " " + layouts
+	}
 }

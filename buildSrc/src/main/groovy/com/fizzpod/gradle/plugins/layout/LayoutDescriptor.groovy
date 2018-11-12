@@ -17,6 +17,10 @@ class LayoutDescriptor {
 	public File write(def root) {
 		def description = getDescription();
 		//parse description
+		def extension = evaluateDescription(description)
+		extension.layouts.each {
+			it.write(root)
+		}
 		return root
 	}
 	
@@ -25,4 +29,13 @@ class LayoutDescriptor {
 		println description
 		return description
 	} 
+	
+	private evaluateDescription(def description) {
+		def binding = new Binding();
+		def shell = new GroovyShell(binding);
+		LayoutPluginExtension extension = new LayoutPluginExtension();
+		binding.setProperty("layout", extension);
+		shell.evaluate(description);
+		return extension;
+	}
 }
