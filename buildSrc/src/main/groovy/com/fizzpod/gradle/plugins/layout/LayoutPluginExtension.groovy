@@ -1,6 +1,11 @@
-package com.fizzpod.gradle.plugins.layout;
+package com.fizzpod.gradle.plugins.layout
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LayoutPluginExtension {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(LayoutPluginExtension.class);
 	
 	def layouts = []
 	
@@ -24,18 +29,9 @@ public class LayoutPluginExtension {
 		return this;
 	}
 	
-	def call() {
-		println "called 1"
-	}
-	
-	def call(Object... args) {
-		println "called 2"
-	}
-	
 	def call(Closure closure) {
-		println "called 3 " + closure + " " + layouts
+		LOGGER.debug("Registering as delegate with closure {}", closure)
 		closure.setDelegate(this)
 		closure.call()
-		println "called 3 " + closure + " " + layouts
 	}
 }

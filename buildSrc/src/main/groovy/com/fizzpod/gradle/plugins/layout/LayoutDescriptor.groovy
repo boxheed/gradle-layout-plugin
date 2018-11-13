@@ -15,27 +15,28 @@ class LayoutDescriptor {
 	}
 
 	public File write(def root) {
-		def description = getDescription();
-		//parse description
-		def extension = evaluateDescription(description)
+		def layoutDsl = getLayoutDsl();
+		//evaluate description
+		def extension = evaluateDsl(layoutDsl)
 		extension.layouts.each {
 			it.write(root)
 		}
 		return root
 	}
 	
-	private getDescription() {
-		def description = url.toURL().text
-		println description
-		return description
+	private getLayoutDsl() {
+		LOGGER.debug("Getting DSL from {}", url)
+		def layoutDsl = url.toURL().text
+		LOGGER.debug("Parsing Descriptor: {}", layoutDsl)
+		return layoutDsl
 	} 
 	
-	private evaluateDescription(def description) {
+	private evaluateDsl(def dsl) {
 		def binding = new Binding();
 		def shell = new GroovyShell(binding);
 		LayoutPluginExtension extension = new LayoutPluginExtension();
 		binding.setProperty("layout", extension);
-		shell.evaluate(description);
+		shell.evaluate(dsl);
 		return extension;
 	}
 }
