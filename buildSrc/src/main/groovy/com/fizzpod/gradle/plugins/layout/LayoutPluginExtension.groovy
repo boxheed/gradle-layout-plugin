@@ -9,7 +9,9 @@ public class LayoutPluginExtension {
 	
 	private static final String DEFAULT_LAYOUT_FILE = "layout.groovy"
 	private static final String DEFAULT_REMOTE_ROOT = "https://raw.githubusercontent.com/boxheed/gradle-layout-plugin-layouts/master/" 
-	
+
+	def remotes = [DEFAULT_REMOTE_ROOT]
+		
 	def layouts = []
 	
 	def file(def file) {
@@ -33,12 +35,17 @@ public class LayoutPluginExtension {
 	}
 	
 	def name(def name) {
-		def url = DEFAULT_REMOTE_ROOT + name + "/" + DEFAULT_LAYOUT_FILE;
-		LOGGER.debug("Mapping name {} to URL {}", name, url)
+		def url = remotes[0] + name + "/" + DEFAULT_LAYOUT_FILE;
+		LOGGER.info("Mapping name {} to URL {}", name, url)
+		println(url)
 		this.url(url)
 		return this
 	}
 	
+	def remote(def remote) {
+		remotes = [remote]
+	}
+
 	def call(Closure closure) {
 		LOGGER.debug("Registering as delegate with closure {}", closure)
 		closure.setDelegate(this)
