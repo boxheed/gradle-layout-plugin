@@ -1,4 +1,5 @@
-[![Build Status](https://api.shippable.com/projects/54fcdb365ab6cc13529548b3/badge?branchName=master)](https://app.shippable.com/projects/54fcdb365ab6cc13529548b3/builds/latest)
+[![CircleCI](https://circleci.com/gh/boxheed/gradle-layout-plugin/tree/master.svg?style=shield)](https://circleci.com/gh/boxheed/gradle-layout-plugin/tree/master)
+
 # Gradle Layout Plugin
 A Gradle plugin providing the ability to specify the folder and file layout of the project, optionally including the contents of file.
 
