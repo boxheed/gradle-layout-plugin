@@ -1,16 +1,18 @@
-package com.fizzpod.gradle.plugins.layout;
+/* (C) 2024 */
+/* SPDX-License-Identifier: Apache-2.0 */
+package com.fizzpod.gradle.plugins.layout
 
 import spock.lang.Specification
 
 public class LayoutPluginExtensionSpec extends Specification {
 	
-	LayoutPluginExtension extension = new LayoutPluginExtension();
+	LayoutPluginExtension extension = new LayoutPluginExtension()
 	
 	def "Adding path to extension"() {
 		when:
 			extension.path("path")
 		then:
-			extension.getLayouts().size() == 1;
+			extension.getLayouts().size() == 1
 			extension.getLayouts()[0].path == "path"
 	}
 	
@@ -18,7 +20,7 @@ public class LayoutPluginExtensionSpec extends Specification {
 		when:
 			extension.file("file", {})
 		then:
-			extension.getLayouts().size() == 1;
+			extension.getLayouts().size() == 1
 			extension.getLayouts()[0].file == "file"
 	}
 	
@@ -27,7 +29,7 @@ public class LayoutPluginExtensionSpec extends Specification {
 			extension.path("path")
 			extension.file("file", {})
 		then:
-			extension.getLayouts().size() == 2;
+			extension.getLayouts().size() == 2
 			extension.getLayouts()[0].path == "path"
 			extension.getLayouts()[1].file == "file"
 	}

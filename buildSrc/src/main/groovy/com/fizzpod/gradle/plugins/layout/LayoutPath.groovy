@@ -1,3 +1,5 @@
+/* (C) 2024 */
+/* SPDX-License-Identifier: Apache-2.0 */
 package com.fizzpod.gradle.plugins.layout
 
 import org.slf4j.Logger
@@ -17,10 +19,10 @@ class LayoutPath {
 		
 		def layoutDir = new File(root, path)
 		if(!layoutDir.exists()) {
-			LOGGER.info("Creating directory {}", layoutDir);
+			LOGGER.info("Creating directory {}", layoutDir)
 			layoutDir.mkdirs()
 		} else {
-		LOGGER.info("Skipping directory {} as it already exists", layoutDir);
+		LOGGER.info("Skipping directory {} as it already exists", layoutDir)
 		}
 		return layoutDir
 	}

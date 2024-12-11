@@ -1,9 +1,11 @@
 [![CircleCI](https://circleci.com/gh/boxheed/gradle-layout-plugin/tree/master.svg?style=shield)](https://circleci.com/gh/boxheed/gradle-layout-plugin/tree/master)
 
 # Gradle Layout Plugin
+
 A Gradle plugin providing the ability to specify the folder and file layout of the project, optionally including the contents of file.
 
 # Usage
+
 ```
 buildscript {
     repositories {
@@ -38,4 +40,5 @@ multiple lines"""
 ```
 
 # Tasks
+
 The plugin exposes a single task `createLayout` which creates the specified layout. If a file exists it will not overwrite it.

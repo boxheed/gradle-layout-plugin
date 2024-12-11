@@ -1,11 +1,13 @@
+/* (C) 2024 */
+/* SPDX-License-Identifier: Apache-2.0 */
 package com.fizzpod.gradle.plugins.layout
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 public class LayoutPluginExtension {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(LayoutPluginExtension.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(LayoutPluginExtension.class)
 	
 	private static final String DEFAULT_LAYOUT_FILE = "layout.groovy"
 	private static final String DEFAULT_REMOTE_ROOT = "https://raw.githubusercontent.com/boxheed/gradle-layout-plugin-layouts/master/" 
@@ -16,26 +18,26 @@ public class LayoutPluginExtension {
 	
 	def file(def file) {
 		layouts << new LayoutFile(file)
-		return this;
+		return this
 	}
 	
 	def file(def file, def contents) {
 		layouts << new LayoutFile(file, contents)
-		return this;
+		return this
 	}
 	
 	def path(def path) {
 		layouts << new LayoutPath(path)
-		return this;
+		return this
 	}
 	
 	def url(def url) {
 		layouts << new LayoutDescriptor(url)
-		return this;
+		return this
 	}
 	
 	def name(def name) {
-		def url = remotes[0] + name + "/" + DEFAULT_LAYOUT_FILE;
+		def url = remotes[0] + name + "/" + DEFAULT_LAYOUT_FILE
 		LOGGER.info("Mapping name {} to URL {}", name, url)
 		println(url)
 		this.url(url)
