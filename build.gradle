@@ -1,18 +1,18 @@
 buildscript {
-	repositories {
-		mavenLocal()
-		maven {
-      url "https://plugins.gradle.org/m2/"
+    repositories {
+        mavenLocal()
+        maven {
+            url = "https://plugins.gradle.org/m2/"
+        }
+        maven {
+            url = "https://artifacts.fizzpod.com/public/mvn/"
+        }
     }
-		maven {
-			url "https://artifacts.fizzpod.com/public/mvn/"
-		}
-	}
-	dependencies {
-		classpath ('com.fizzpod:gradle-plugin-opinion:22.1.0') {
-			exclude group: 'com.fizzpod', module: 'gradle-layout-plugin'
-		}
-	}
+    dependencies {
+        classpath ('com.fizzpod:gradle-plugin-opinion:22.1.0') {
+            exclude group: 'com.fizzpod', module: 'gradle-layout-plugin'
+        }
+    }
 }
 
 apply plugin: 'com.fizzpod.pater-build'
@@ -27,26 +27,26 @@ sourceSets {
             srcDir 'buildSrc/src/main/resources'
             exclude 'META-INF/gradle-plugins/com.fizzpod.layout.properties'
         }
-		groovy {
-		    srcDir 'buildSrc/src/main/groovy'
-		}
-	}
-	test {
+        groovy {
+            srcDir 'buildSrc/src/main/groovy'
+        }
+    }
+    test {
         java {
             srcDir 'buildSrc/src/test/java'
         }
         resources {
             srcDir 'buildSrc/src/test/resources'
         }
-		groovy {
-		    srcDir 'buildSrc/src/test/groovy'
-		}
-	}
+        groovy {
+            srcDir 'buildSrc/src/test/groovy'
+        }
+    }
 }
 
 dependencies {
-	api gradleApi()
-	api localGroovy()
+    api gradleApi()
+    api localGroovy()
 }
 
 gradlePlugin {
