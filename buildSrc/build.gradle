@@ -3,7 +3,7 @@ repositories {
 }
 
 dependencies {
-
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.20" // As per subtask, assuming 1.8.20
 	testImplementation('com.netflix.nebula:nebula-test:10.6.2') {
         exclude group: 'org.codehaus.groovy'
     }

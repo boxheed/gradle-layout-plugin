@@ -13,6 +13,15 @@ buildscript {
             exclude group: 'com.fizzpod', module: 'gradle-layout-plugin'
         }
     }
+    configurations.classpath {
+        resolutionStrategy {
+            force "org.jetbrains.kotlin:kotlin-compiler-embeddable:1.8.20"
+        }
+    }
+}
+
+plugins {
+    id "org.jetbrains.kotlin.jvm" version "1.8.20"
 }
 
 apply plugin: 'com.fizzpod.pater-build'
@@ -62,6 +71,9 @@ gradlePlugin {
     }
 }
 
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.20"
+}
 
 test {
     useJUnitPlatform()
