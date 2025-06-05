@@ -1,10 +1,42 @@
+plugins {
+    id 'java-library' // For compiling Java code in buildSrc, provides 'api' and 'implementation' configurations
+    // 'groovy' plugin can be added here if there's Groovy code in buildSrc/src/main/groovy
+    // For now, assuming only Java or the previously converted (but currently not compiled) Kotlin
+}
+
 repositories {
-	mavenCentral()
+    mavenCentral()
+}
+
+// Set Java compatibility
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.20" // As per subtask, assuming 1.8.20
-	testImplementation('com.netflix.nebula:nebula-test:10.6.2') {
-        exclude group: 'org.codehaus.groovy'
-    }
+    // Dependencies needed for writing Gradle plugins or build logic
+    implementation gradleApi()
+    implementation localGroovy() // If buildSrc itself contains Groovy code or build.gradle uses advanced Groovy
+
+    // Test dependencies
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    testImplementation 'org.mockito:mockito-core:4.5.1'
+    testImplementation 'org.mockito:mockito-junit-jupiter:4.5.1'
+
+    // Removed: implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.20'
+    // The original nebula-test dependency can be added back if needed for specific test utilities
+    // testImplementation('com.netflix.nebula:nebula-test:10.6.2') {
+    //     exclude group: 'org.codehaus.groovy'
+    // }
 }
+
+tasks.named('test', org.gradle.api.tasks.testing.Test::class.java) {
+    useJUnitPlatform()
+}
+
+// Removed Kotlin specific configurations:
+// import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+// println "Configuring KotlinCompile tasks in buildSrc/build.gradle..."
+// tasks.withType(KotlinCompile::class.java).configureEach { ... }

@@ -13,45 +13,19 @@ buildscript {
             exclude group: 'com.fizzpod', module: 'gradle-layout-plugin'
         }
     }
-    configurations.classpath {
-        resolutionStrategy {
-            force "org.jetbrains.kotlin:kotlin-compiler-embeddable:1.8.20"
-        }
-    }
+    // Removed Kotlin-specific resolution strategy from buildscript.configurations.classpath
 }
 
-plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.8.20"
-}
+// Removed Kotlin plugin from main build
+// plugins {
+//     id "org.jetbrains.kotlin.jvm" version "1.8.20"
+// }
 
 apply plugin: 'com.fizzpod.pater-build'
-apply from: 'buildSrc/build.gradle'
+// apply from: 'buildSrc/build.gradle' // Removed
 
-sourceSets {
-    main {
-        java {
-            srcDir 'buildSrc/src/main/java'
-        }
-        resources {
-            srcDir 'buildSrc/src/main/resources'
-            exclude 'META-INF/gradle-plugins/com.fizzpod.layout.properties'
-        }
-        groovy {
-            srcDir 'buildSrc/src/main/groovy'
-        }
-    }
-    test {
-        java {
-            srcDir 'buildSrc/src/test/java'
-        }
-        resources {
-            srcDir 'buildSrc/src/test/resources'
-        }
-        groovy {
-            srcDir 'buildSrc/src/test/groovy'
-        }
-    }
-}
+// sourceSets block entirely removed as it only referenced buildSrc paths
+// If main project had its own sources like src/main/java, those would be kept.
 
 dependencies {
     api gradleApi()
@@ -71,9 +45,10 @@ gradlePlugin {
     }
 }
 
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.20"
-}
+// Removed Kotlin stdlib dependency from main build's dependencies
+// dependencies {
+//     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.20"
+// }
 
 test {
     useJUnitPlatform()
