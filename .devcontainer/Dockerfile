@@ -22,7 +22,7 @@ RUN install_packages \
   zip \
   openssh-client \
   procps \
-  openjdk-17-jdk
+  openjdk-21-jdk
 
 RUN echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
   && chmod 0440 /etc/sudoers.d/$USERNAME
