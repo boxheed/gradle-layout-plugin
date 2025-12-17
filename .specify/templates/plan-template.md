@@ -31,7 +31,10 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- **Code Quality**: Does the plan account for code reviews and adherence to coding standards?
+- **Testing Standards**: Is there a clear testing strategy, including unit, integration, and end-to-end tests?
+- **User Experience Consistency**: Does the plan ensure the new feature aligns with existing UI/UX patterns?
+- **Performance Requirements**: Are performance goals defined? Is there a plan for testing and optimization?
 
 ## Project Structure
 

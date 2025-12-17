@@ -5,6 +5,13 @@
 **Status**: Draft  
 **Input**: User description: "$ARGUMENTS"
 
+## Constitution Alignment
+
+*Remember to align with the project constitution:*
+
+-   **User Experience Consistency**: Ensure user journeys and interactions are consistent with existing patterns.
+-   **Performance Requirements**: Define performance success criteria where applicable.
+
 ## User Scenarios & Testing *(mandatory)*
 
 <!--
