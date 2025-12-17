@@ -22,7 +22,10 @@ RUN install_packages \
   zip \
   openssh-client \
   procps \
-  openjdk-21-jdk
+  openjdk-21-jdk \
+  python3-venv \
+  python3-pip \
+  pipx
 
 RUN echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
   && chmod 0440 /etc/sudoers.d/$USERNAME

@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+
 set -e
 for SCRIPT in "$1"/*; do
     if [ -f "$SCRIPT" ] && [ -x "$SCRIPT" ]; then
