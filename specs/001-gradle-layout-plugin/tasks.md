@@ -4,19 +4,19 @@
 
 ## Phase 1: Setup (Shared Infrastructure)
 
-- [ ] T001 [P] Create the basic directory structure `src/main/groovy`, `src/test/groovy`, `src/main/resources`.
-- [ ] T002 [P] Create the `build.gradle` file for the plugin project, including the `groovy` plugin and dependencies on `gradleApi()`.
-- [ ] T003 [P] Create the plugin properties file in `src/main/resources/META-INF/gradle-plugins/com.fizzpod.layout.properties`.
+- [X] T001 [P] Create the basic directory structure `src/main/groovy`, `src/test/groovy`, `src/main/resources`.
+- [X] T002 [P] Create the `build.gradle` file for the plugin project, including the `groovy` plugin and dependencies on `gradleApi()`.
+- [X] T003 [P] Create the plugin properties file in `src/main/resources/META-INF/gradle-plugins/com.fizzpod.layout.properties`.
 
 ---
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
-- [ ] T004 Create the main plugin class `LayoutPlugin.groovy` in `src/main/groovy/com/fizzpod/gradle/plugins/layout/`.
-- [ ] T005 Create the plugin extension class `LayoutPluginExtension.groovy` in `src/main/groovy/com/fizzpod/gradle/plugins/layout/`.
-- [ ] T006 Create the `LayoutFile.groovy` class in `src/main/groovy/com/fizzpod/gradle/plugins/layout/`.
-- [ ] T007 Create the `LayoutPath.groovy` class in `src/main/groovy/com/fizzpod/gradle/plugins/layout/`.
-- [ ] T008 Implement the basic `apply` method in `LayoutPlugin.groovy` to register the `layout` extension.
+- [X] T004 Create the main plugin class `LayoutPlugin.groovy` in `src/main/groovy/com/fizzpod/gradle/plugins/layout/`.
+- [X] T005 Create the plugin extension class `LayoutPluginExtension.groovy` in `src/main/groovy/com/fizzpod/gradle/plugins/layout/`.
+- [X] T006 Create the `LayoutFile.groovy` class in `src/main/groovy/com/fizzpod/gradle/plugins/layout/`.
+- [X] T007 Create the `LayoutPath.groovy` class in `src/main/groovy/com/fizzpod/gradle/plugins/layout/`.
+- [X] T008 Implement the basic `apply` method in `LayoutPlugin.groovy` to register the `layout` extension.
 
 ---
 
@@ -27,16 +27,16 @@
 **Independent Test**: A `build.gradle` file with a `layout` block defining files and paths can be used to generate the specified structure in an empty directory.
 
 ### Tests for User Story 1
-- [ ] T009 [US1] Create the test specification `LayoutPluginSpec.groovy` in `src/test/groovy/com/fizzpod/gradle/plugins/layout/`.
-- [ ] T010 [US1] Write a test in `LayoutPluginSpec.groovy` that defines a layout with an empty file and verifies that the `createLayout` task creates it.
-- [ ] T011 [US1] Write a test in `LayoutPluginSpec.groovy` that defines a layout with a directory and verifies that the `createLayout` task creates it.
-- [ ] T012 [US1] Write a test in `LayoutPluginSpec.groovy` that checks if an existing file is not overwritten.
+- [X] T009 [US1] Create the test specification `LayoutPluginSpec.groovy` in `src/test/groovy/com/fizzpod/gradle/plugins/layout/`.
+- [X] T010 [US1] Write a test in `LayoutPluginSpec.groovy` that defines a layout with an empty file and verifies that the `createLayout` task creates it.
+- [X] T011 [US1] Write a test in `LayoutPluginSpec.groovy` that defines a layout with a directory and verifies that the `createLayout` task creates it.
+- [X] T012 [US1] Write a test in `LayoutPluginSpec.groovy` that checks if an existing file is not overwritten.
 
 ### Implementation for User Story 1
 
-- [ ] T013 [US1] Implement the `file(String path)` method in `LayoutPluginExtension.groovy` to add an empty file to the layout.
-- [ ] T014 [US1] Implement the `path(String path)` method in `LayoutPluginExtension.groovy` to add a directory to the layout.
-- [ ] T015 [US1] Implement the `createLayout` task in `LayoutPlugin.groovy` to iterate over the defined paths and files and create them.
+- [X] T013 [US1] Implement the `file(String path)` method in `LayoutPluginExtension.groovy` to add an empty file to the layout.
+- [X] T014 [US1] Implement the `path(String path)` method in `LayoutPluginExtension.groovy` to add a directory to the layout.
+- [X] T015 [US1] Implement the `createLayout` task in `LayoutPlugin.groovy` to iterate over the defined paths and files and create them.
 
 ---
 
@@ -48,21 +48,21 @@
 
 ### Tests for User Story 2
 
-- [ ] T016 [US2] Write a test in `LayoutPluginSpec.groovy` that defines a layout with a file containing single-line content and verifies its creation.
-- [ ] T017 [US2] Write a test in `LayoutPluginSpec.groovy` that defines a layout with a file containing multi-line content and verifies its creation.
+- [X] T016 [US2] Write a test in `LayoutPluginSpec.groovy` that defines a layout with a file containing single-line content and verifies its creation.
+- [X] T017 [US2] Write a test in `LayoutPluginSpec.groovy` that defines a layout with a file containing multi-line content and verifies its creation.
 
 ### Implementation for User Story 2
 
-- [ ] T018 [US2] Implement the `file(String path, Closure content)` method in `LayoutPluginExtension.groovy` to add a file with content to the layout.
-- [ ] T019 [US2] Update the `createLayout` task in `LayoutPlugin.groovy` to handle writing content to files.
+- [X] T018 [US2] Implement the `file(String path, Closure content)` method in `LayoutPluginExtension.groovy` to add a file with content to the layout.
+- [X] T019 [US2] Update the `createLayout` task in `LayoutPlugin.groovy` to handle writing content to files.
 
 ---
 
 ## Phase 5: Polish & Cross-Cutting Concerns
 
-- [ ] T020 [P] Update the `README.md` file with comprehensive documentation.
-- [ ] T021 [P] Create example projects using the plugin.
-- [ ] T022 [P] Review code for quality and adherence to conventions.
+- [X] T020 [P] Update the `README.md` file with comprehensive documentation.
+- [X] T021 [P] Create example projects using the plugin.
+- [X] T022 [P] Review code for quality and adherence to conventions.
 
 ---
 

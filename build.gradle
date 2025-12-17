@@ -1,72 +1,31 @@
-buildscript {
-    repositories {
-        mavenLocal()
-        maven {
-            url = "https://plugins.gradle.org/m2/"
-        }
-        maven {
-            url = "https://artifacts.fizzpod.com/public/mvn/"
-        }
-    }
-    dependencies {
-        classpath ('com.fizzpod:gradle-plugin-opinion:24.0.1') {
-            exclude group: 'com.fizzpod', module: 'gradle-layout-plugin'
-        }
-    }
+plugins {
+    id 'groovy'
+    id 'maven-publish'
 }
 
-apply plugin: 'com.fizzpod.pater-build'
-apply from: 'buildSrc/build.gradle'
-
-sourceSets {
-    main {
-        java {
-            srcDir 'buildSrc/src/main/java'
-        }
-        resources {
-            srcDir 'buildSrc/src/main/resources'
-            exclude 'META-INF/gradle-plugins/com.fizzpod.layout.properties'
-        }
-        groovy {
-            srcDir 'buildSrc/src/main/groovy'
-        }
-    }
-    test {
-        java {
-            srcDir 'buildSrc/src/test/java'
-        }
-        resources {
-            srcDir 'buildSrc/src/test/resources'
-        }
-        groovy {
-            srcDir 'buildSrc/src/test/groovy'
-        }
-    }
+repositories {
+    mavenCentral()
 }
 
 dependencies {
-    api gradleApi()
-    api localGroovy()
+    implementation gradleApi()
+    implementation localGroovy()
+    testImplementation 'org.spockframework:spock-core:2.4-groovy-4.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
-
-gradlePlugin {
-
-    plugins {
-        plugin {
-            description = 'Gradle plugin providing a configuration mechanism to create standardised layouts.'
-            tags.set(['layout', 'template'])
-            id = 'com.fizzpod.layout'
-            displayName = 'Gradle Layout plugin'
-            implementationClass = 'com.fizzpod.gradle.plugins.layout.LayoutPlugin'
-        }
-    }
-}
-
 
 test {
     useJUnitPlatform()
+    jvmArgs '--add-opens=java.base/java.lang=ALL-UNNAMED'
+}
 
-    testLogging {
-        events "started", "passed", "skipped", "failed"
+group = 'com.fizzpod'
+version = '1.0.0'
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
     }
 }
