@@ -27,6 +27,7 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
+      - run: git fetch --unshallow || true
       - run: ./gradlew --write-locks resolveAndLockAll
       - run: ./gradlew osvInstall
       - run: ./gradlew osvScan
