@@ -4,7 +4,7 @@ repositories {
 
 dependencies {
 
-    testImplementation('com.netflix.nebula:nebula-test:12.1.0') 
+    testImplementation('com.netflix.nebula:nebula-test:12.2.0') 
     // Fix for GHSA-rqfh-9r24-8c9r (CVE-2026-24400)
     testImplementation('org.assertj:assertj-core:3.27.7')
     testImplementation('org.spockframework:spock-core:2.4-groovy-4.0')
