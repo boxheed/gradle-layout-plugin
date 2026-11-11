@@ -1,4 +1,4 @@
-/* (C) 2024 */
+/* (C) 2024-2026 */
 /* SPDX-License-Identifier: Apache-2.0 */
 package com.fizzpod.gradle.plugins.layout
 
@@ -13,10 +13,9 @@ class LayoutPlugin implements Plugin<Project> {
 
 	void apply(Project project) {
 		def layoutPluginExtension = project.extensions.create("layout", LayoutPluginExtension)
+		layoutPluginExtension.project = project
 		project.task([group: 'layout'], 'createLayout').doLast {
-			layoutPluginExtension.layouts.each {
-				it.write(project.rootDir)
-			}
+			layoutPluginExtension.write(project.rootDir)
 		}
 	}
 }

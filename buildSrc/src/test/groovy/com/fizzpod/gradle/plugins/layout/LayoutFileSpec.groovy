@@ -1,4 +1,4 @@
-/* (C) 2024 */
+/* (C) 2024-2026 */
 /* SPDX-License-Identifier: Apache-2.0 */
 package com.fizzpod.gradle.plugins.layout
 
@@ -101,5 +101,50 @@ Line3"""
 Line 2
 Line3""")
 	}
-	
+
+	def "do not overwrite existing file by default"() {
+		setup:
+			File existingFile = temporaryFolder.newFile("file1")
+			existingFile.setText("original content", "UTF-8")
+		when:
+			def layoutFile = new LayoutFile("file1", { "new content" })
+			layoutFile.write(temporaryFolder.getRoot())
+		then:
+			existingFile.getText("UTF-8") == "original content"
+	}
+
+	def "overwrite existing file when overwrite option is true"() {
+		setup:
+			File existingFile = temporaryFolder.newFile("file1")
+			existingFile.setText("original content", "UTF-8")
+		when:
+			def layoutFile = new LayoutFile("file1", [overwrite: true], { "updated content" })
+			layoutFile.write(temporaryFolder.getRoot())
+		then:
+			existingFile.getText("UTF-8") == "updated content"
+	}
+
+	def "create file with content from url"() {
+		setup:
+			File sourceFile = temporaryFolder.newFile("source.txt")
+			sourceFile.setText("remote file content", "UTF-8")
+		when:
+			def layoutFile = new LayoutFile("dest/target.txt", [url: sourceFile.toURI().toURL().toString()])
+			layoutFile.write(temporaryFolder.getRoot())
+		then:
+			File targetFile = new File(temporaryFolder.getRoot(), "dest/target.txt")
+			targetFile.exists()
+			targetFile.getText("UTF-8") == "remote file content"
+	}
+
+	def "create executable file when executable option is true"() {
+		when:
+			def layoutFile = new LayoutFile("scripts/run.sh", [executable: true], { "#!/bin/sh\necho hi" })
+			layoutFile.write(temporaryFolder.getRoot())
+		then:
+			File scriptFile = new File(temporaryFolder.getRoot(), "scripts/run.sh")
+			scriptFile.exists()
+			scriptFile.canExecute()
+	}
+
 }
