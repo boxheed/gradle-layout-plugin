@@ -19,7 +19,7 @@ jobs:
           name: setup
           command: source <(curl -s https://raw.githubusercontent.com/boxheed/shippable-scripts/master/java-build-ci-setup)
       - checkout
-      - run: ./gradlew clean build 
+      - run: ./gradlew clean build
   
   security:
     docker:
@@ -27,9 +27,7 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      - run: ./gradlew --write-locks resolveAndLockAll
-      - run: ./gradlew osvInstall
-      - run: ./gradlew osvScan
+      - run: ./gradlew osvInstall osvLockAndScan
 
   release:
     docker:
@@ -47,7 +45,7 @@ jobs:
       - checkout
       - run: ./gradlew tagSemver
       - run: "git checkout develop && git merge $CIRCLE_BRANCH -m \"fix(release): merge $CIRCLE_BRANCH into develop\" --no-ff"
-      - run: git push --atomic origin $CIRCLE_BRANCH develop --tags
+      - run: git push --atomic origin master develop --tags
 
   publish:
     docker:
@@ -63,7 +61,7 @@ jobs:
           name: setup
           command: source <(curl -s https://raw.githubusercontent.com/boxheed/shippable-scripts/master/java-build-ci-setup)
       - checkout
-      - run: ./gradlew build publish publishPlugins githubRelease
+      - run: ./gradlew build publish githubRelease
 
 workflows:
   build:
@@ -87,4 +85,4 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /^v\d+\.\d+\.\d+$/       
+              only: /^v\d+\.\d+\.\d+$/
