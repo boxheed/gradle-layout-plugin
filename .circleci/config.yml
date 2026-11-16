@@ -61,7 +61,7 @@ jobs:
           name: setup
           command: source <(curl -s https://raw.githubusercontent.com/boxheed/shippable-scripts/master/java-build-ci-setup)
       - checkout
-      - run: ./gradlew build publish githubRelease
+      - run: ./gradlew build publish publishPlugins githubRelease
 
 workflows:
   build:
@@ -85,4 +85,4 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /^v\d+\.\d+\.\d+$/
+              only: /^v\d+\.\d+\.\d+$/       
