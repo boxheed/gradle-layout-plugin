@@ -24,8 +24,10 @@ class LayoutPluginSpec extends Specification {
             def layoutPlugin = new LayoutPlugin()
             layoutPlugin.apply(project)
         then: 
-            project.getTasksByName("createLayout", false) != null
+            !project.getTasksByName("applyLayout", false).isEmpty()
             !project.getTasksByName("createLayout", false).isEmpty()
+            !project.getTasksByName("checkLayout", false).isEmpty()
+            project.getTasksByName("createLayout", false)[0].taskDependencies.getDependencies(null).contains(project.getTasksByName("applyLayout", false)[0])
             project.getExtensions().findByName("layout") != null
     }
     
@@ -37,8 +39,7 @@ class LayoutPluginSpec extends Specification {
             LayoutPluginExtension extension = project.getExtensions().findByName("layout")
             extension.file("file1", null)
         when:
-            println project.getTasksByName("createLayout", false)
-            def task = project.getTasksByName("createLayout", false)[0]
+            def task = project.getTasksByName("applyLayout", false)[0]
             task.actions.each { Action action ->
                 action.execute(task)
            }
@@ -57,8 +58,7 @@ class LayoutPluginSpec extends Specification {
             LayoutPluginExtension extension = project.getExtensions().findByName("layout")
             extension.path("path1")
         when:
-            println project.getTasksByName("createLayout", false)
-            def task = project.getTasksByName("createLayout", false)[0]
+            def task = project.getTasksByName("applyLayout", false)[0]
             task.actions.each { Action action ->
                 action.execute(task)
            }
@@ -77,8 +77,8 @@ class LayoutPluginSpec extends Specification {
             extension.path("dir1")
             extension.file("README.md", [overwrite: false], { "initial" })
             extension.file("managed.txt", [overwrite: true], { "expected" })
-            project.getTasksByName("createLayout", false)[0].actions.each { Action action ->
-                action.execute(project.getTasksByName("createLayout", false)[0])
+            project.getTasksByName("applyLayout", false)[0].actions.each { Action action ->
+                action.execute(project.getTasksByName("applyLayout", false)[0])
             }
             new File(temporaryFolder.getRoot(), "README.md").setText("customized", "UTF-8")
         when:
