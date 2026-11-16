@@ -116,6 +116,27 @@ class LayoutFile {
 		return layoutFile
 	}
 
+	public List<String> check(def root) {
+		List<String> issues = []
+		def layoutFile = new File(root, file)
+		if (!layoutFile.exists() || layoutFile.isDirectory()) {
+			issues << "Missing file: ${file}".toString()
+			return issues
+		}
+		if (executable && !layoutFile.canExecute()) {
+			issues << "File is not executable: ${file}".toString()
+		}
+		if (overwrite) {
+			def resolvedContents = resolveContents()
+			String expected = resolvedContents != null ? resolvedContents.toString() : ""
+			String actual = layoutFile.getText("UTF-8")
+			if (actual != expected) {
+				issues << "Out-of-sync file: ${file}".toString()
+			}
+		}
+		return issues
+	}
+
 	private def resolveContents() {
 		if (contents instanceof Closure) {
 			return contents.call()

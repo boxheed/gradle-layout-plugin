@@ -2,6 +2,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package com.fizzpod.gradle.plugins.layout
 
+import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.slf4j.Logger
@@ -14,8 +15,20 @@ class LayoutPlugin implements Plugin<Project> {
 	void apply(Project project) {
 		def layoutPluginExtension = project.extensions.create("layout", LayoutPluginExtension)
 		layoutPluginExtension.project = project
-		project.task([group: 'layout'], 'createLayout').doLast {
+		def applyTask = project.task([group: 'layout'], 'applyLayout').doLast {
 			layoutPluginExtension.write(project.rootDir)
+		}
+		project.task([group: 'layout', description: 'Deprecated alias for applyLayout.'], 'createLayout') {
+			dependsOn(applyTask)
+			doLast {
+				LOGGER.warn("Task 'createLayout' is deprecated; use 'applyLayout' instead.")
+			}
+		}
+		project.task([group: 'layout'], 'checkLayout').doLast {
+			List<String> issues = layoutPluginExtension.check(project.rootDir)
+			if (!issues.isEmpty()) {
+				throw new GradleException("Layout check failed. Run './gradlew applyLayout' to update:\n - " + issues.join("\n - "))
+			}
 		}
 	}
 }

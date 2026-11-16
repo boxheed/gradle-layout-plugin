@@ -18,6 +18,10 @@ buildscript {
 apply plugin: 'com.fizzpod.pater-build'
 apply from: 'buildSrc/build.gradle'
 
+layout {
+    name 'gradle-plugin'
+}
+
 sourceSets {
     main {
         java {
