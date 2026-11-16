@@ -51,4 +51,6 @@ multiple lines"""
 
 # Tasks
 
-The plugin exposes a single task `createLayout` which creates the specified layout. By default, if a file exists it will not overwrite it unless `overwrite: true` is configured globally or on the individual file entry.
+The plugin exposes two tasks:
+- `createLayout`: creates (or overwrites, when `overwrite: true`) the specified layout. By default, if a file exists it will not overwrite it unless `overwrite: true` is configured globally or on the individual file entry.
+- `checkLayout`: verifies that configured directories and files exist and that `overwrite: true` files match their expected contents. Remote checks are skipped with a warning when Gradle is offline (`--offline` or `-Playout.offline=true`).

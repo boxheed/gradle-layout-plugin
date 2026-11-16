@@ -127,7 +127,7 @@ public class LayoutPluginExtension {
 	}
 
 	private void collectLayouts(List items, List resolvedPaths, Map<String, LayoutFile> resolvedFiles) {
-		items.each { def item ->
+		for (def item : items) {
 			if (item instanceof LayoutPath) {
 				resolvedPaths << item
 			} else if (item instanceof LayoutFile) {
@@ -144,11 +144,33 @@ public class LayoutPluginExtension {
 		}
 	}
 
+	public boolean isOfflineMode() {
+		if (project == null) {
+			return false
+		}
+		boolean gradleOffline = project.gradle?.startParameter?.offline ?: false
+		boolean propOffline = project.hasProperty("layout.offline") &&
+			Boolean.parseBoolean(project.property("layout.offline")?.toString() ?: "false")
+		return gradleOffline || propOffline
+	}
+
 	public File write(def root) {
 		resolveLayouts().each {
 			it.write(root)
 		}
 		return root
+	}
+
+	public List<String> check(def root) {
+		if (isOfflineMode()) {
+			LOGGER.warn("Layout check running in offline mode; skipping layout check.")
+			return []
+		}
+		List<String> issues = []
+		resolveLayouts().each {
+			issues.addAll(it.check(root))
+		}
+		return issues
 	}
 
 	def call(Closure closure) {

@@ -2,6 +2,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package com.fizzpod.gradle.plugins.layout
 
+import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.slf4j.Logger
@@ -16,6 +17,12 @@ class LayoutPlugin implements Plugin<Project> {
 		layoutPluginExtension.project = project
 		project.task([group: 'layout'], 'createLayout').doLast {
 			layoutPluginExtension.write(project.rootDir)
+		}
+		project.task([group: 'layout'], 'checkLayout').doLast {
+			List<String> issues = layoutPluginExtension.check(project.rootDir)
+			if (!issues.isEmpty()) {
+				throw new GradleException("Layout check failed. Run './gradlew createLayout' to update:\n - " + issues.join("\n - "))
+			}
 		}
 	}
 }
