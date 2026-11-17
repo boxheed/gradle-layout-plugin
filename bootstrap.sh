@@ -14,7 +14,6 @@ PROJECT_NAME=""
 PROJECT_GROUP=""
 PROJECT_VERSION=""
 PROJECT_DESCRIPTION=""
-CACHE_DIR="${XDG_CACHE_HOME:-${HOME}/.cache}/gradle-layout-plugin"
 TMP_DIR=""
 
 usage() {
@@ -32,7 +31,7 @@ Options:
       --dry-run                   Print resolved configuration without applying
   -y, --non-interactive           Do not prompt on /dev/tty
       --plugin-version <ver>      gradle-layout-plugin version (default: 7.1.0)
-      --gradle-version <ver>      Gradle version to cache if missing (default: 8.14)
+      --gradle-version <ver>      Gradle version to download if missing (default: 8.14)
       --project-name <name>       Project name for interpolation (default: dir name)
       --project-group <group>     Project group for interpolation
       --project-version <ver>     Project version for interpolation
@@ -195,9 +194,10 @@ resolve_gradle_bin() {
     exit 1
   fi
 
-  cached_gradle="${CACHE_DIR}/gradle-${GRADLE_VERSION}/bin/gradle"
-  if [ -x "${cached_gradle}" ]; then
-    printf '%s\n' "${cached_gradle}"
+  dl_dir="${TMP_DIR:-$(mktemp -d)}"
+  temp_gradle="${dl_dir}/gradle-${GRADLE_VERSION}/bin/gradle"
+  if [ -x "${temp_gradle}" ]; then
+    printf '%s\n' "${temp_gradle}"
     return 0
   fi
 
@@ -206,33 +206,32 @@ resolve_gradle_bin() {
     exit 1
   fi
 
-  mkdir -p "${CACHE_DIR}"
-  zip_path="${CACHE_DIR}/gradle-${GRADLE_VERSION}-bin.zip"
+  zip_path="${dl_dir}/gradle-${GRADLE_VERSION}-bin.zip"
   dist_url="https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip"
-  printf '%s\n' "[layout-bootstrap] Downloading Gradle ${GRADLE_VERSION} to ${CACHE_DIR}..." >&2
+  printf '%s\n' "[layout-bootstrap] Downloading Gradle ${GRADLE_VERSION}..." >&2
   curl -sSLf "${dist_url}" -o "${zip_path}"
   if command -v unzip >/dev/null 2>&1; then
-    unzip -q -o "${zip_path}" -d "${CACHE_DIR}"
+    unzip -q -o "${zip_path}" -d "${dl_dir}"
   elif command -v python3 >/dev/null 2>&1; then
-    python3 -m zipfile -e "${zip_path}" "${CACHE_DIR}"
+    python3 -m zipfile -e "${zip_path}" "${dl_dir}"
   elif command -v jar >/dev/null 2>&1; then
-    (cd "${CACHE_DIR}" && jar xf "${zip_path}")
+    (cd "${dl_dir}" && jar xf "${zip_path}")
   else
     rm -f "${zip_path}"
     log_err "'unzip', 'python3', or 'jar' is required to extract Gradle ${GRADLE_VERSION}."
     exit 1
   fi
   rm -f "${zip_path}"
-  if [ -f "${cached_gradle}" ]; then
-    chmod +x "${cached_gradle}"
+  if [ -f "${temp_gradle}" ]; then
+    chmod +x "${temp_gradle}"
   fi
 
-  if [ ! -x "${cached_gradle}" ]; then
-    log_err "Failed to install Gradle ${GRADLE_VERSION} into ${CACHE_DIR}."
+  if [ ! -x "${temp_gradle}" ]; then
+    log_err "Failed to install Gradle ${GRADLE_VERSION} into ${dl_dir}."
     exit 1
   fi
 
-  printf '%s\n' "${cached_gradle}"
+  printf '%s\n' "${temp_gradle}"
 }
 
 escape_groovy_string() {

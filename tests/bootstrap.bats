@@ -96,15 +96,15 @@ EOF
   [ "$output" = "${target}/gradlew" ]
 }
 
-@test "resolve_gradle_bin uses cached gradle when gradle is not on PATH" {
+@test "resolve_gradle_bin uses gradle in TMP_DIR when gradle is not on PATH" {
   local target="${TEST_TEMP_DIR}/no-wrapper"
-  local cache="${TEST_TEMP_DIR}/cache"
-  mkdir -p "${target}" "${cache}/gradle-8.14/bin"
-  cat >"${cache}/gradle-8.14/bin/gradle" <<'EOF'
+  local tmp_gradle="${TEST_TEMP_DIR}/tmp-gradle"
+  mkdir -p "${target}" "${tmp_gradle}/gradle-8.14/bin"
+  cat >"${tmp_gradle}/gradle-8.14/bin/gradle" <<'EOF'
 #!/usr/bin/env sh
 exit 0
 EOF
-  chmod +x "${cache}/gradle-8.14/bin/gradle"
+  chmod +x "${tmp_gradle}/gradle-8.14/bin/gradle"
 
   # Provide a minimal PATH that includes java but not gradle
   local fake_bin="${TEST_TEMP_DIR}/bin"
@@ -120,7 +120,7 @@ EOF
     gradle() { return 1; }
     . '${BOOTSTRAP_SH}'
     TARGET_DIR='${target}'
-    CACHE_DIR='${cache}'
+    TMP_DIR='${tmp_gradle}'
     GRADLE_VERSION='8.14'
     if command -v gradle >/dev/null 2>&1; then
       echo 'SKIP_SYSTEM_GRADLE'
@@ -130,7 +130,7 @@ EOF
   "
   [ "$status" -eq 0 ]
   if [ "$output" != "SKIP_SYSTEM_GRADLE" ]; then
-    [ "$output" = "${cache}/gradle-8.14/bin/gradle" ]
+    [ "$output" = "${tmp_gradle}/gradle-8.14/bin/gradle" ]
   fi
 }
 
@@ -226,15 +226,15 @@ EOF
 @test "fails when java is present without gradle or curl" {
   local target="${TEST_TEMP_DIR}/no-curl"
   local fake_bin="${TEST_TEMP_DIR}/fake-bin"
-  local cache="${TEST_TEMP_DIR}/empty-cache"
-  mkdir -p "${target}" "${fake_bin}" "${cache}"
+  local tmp_gradle="${TEST_TEMP_DIR}/empty-tmp"
+  mkdir -p "${target}" "${fake_bin}" "${tmp_gradle}"
   cat >"${fake_bin}/java" <<'EOF'
 #!/usr/bin/env sh
 exit 0
 EOF
   chmod +x "${fake_bin}/java"
 
-  run env BOOTSTRAP_SOURCE_ONLY=1 sh -c "PATH='${fake_bin}'; export PATH; . '${BOOTSTRAP_SH}'; TARGET_DIR='${target}'; CACHE_DIR='${cache}'; resolve_gradle_bin"
+  run env BOOTSTRAP_SOURCE_ONLY=1 sh -c "PATH='${fake_bin}'; export PATH; . '${BOOTSTRAP_SH}'; TARGET_DIR='${target}'; TMP_DIR='${tmp_gradle}'; resolve_gradle_bin"
   [ "$status" -ne 0 ]
   [[ "$output" == *"'curl' is required to download Gradle"* ]]
 }
