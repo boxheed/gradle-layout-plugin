@@ -27,6 +27,9 @@ class LayoutPluginSpec extends Specification {
             !project.getTasksByName("applyLayout", false).isEmpty()
             !project.getTasksByName("createLayout", false).isEmpty()
             !project.getTasksByName("checkLayout", false).isEmpty()
+            project.getTasksByName("applyLayout", false)[0].description
+            project.getTasksByName("checkLayout", false)[0].description
+            project.getTasksByName("createLayout", false)[0].description
             project.getTasksByName("createLayout", false)[0].taskDependencies.getDependencies(null).contains(project.getTasksByName("applyLayout", false)[0])
             project.getExtensions().findByName("layout") != null
     }
