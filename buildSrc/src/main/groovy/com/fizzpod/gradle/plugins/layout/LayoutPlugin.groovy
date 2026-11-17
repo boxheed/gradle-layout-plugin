@@ -15,7 +15,7 @@ class LayoutPlugin implements Plugin<Project> {
 	void apply(Project project) {
 		def layoutPluginExtension = project.extensions.create("layout", LayoutPluginExtension)
 		layoutPluginExtension.project = project
-		def applyTask = project.task([group: 'layout'], 'applyLayout').doLast {
+		def applyTask = project.task([group: 'layout', description: 'Applies the configured project layout.'], 'applyLayout').doLast {
 			layoutPluginExtension.write(project.rootDir)
 		}
 		project.task([group: 'layout', description: 'Deprecated alias for applyLayout.'], 'createLayout') {
@@ -24,7 +24,7 @@ class LayoutPlugin implements Plugin<Project> {
 				LOGGER.warn("Task 'createLayout' is deprecated; use 'applyLayout' instead.")
 			}
 		}
-		project.task([group: 'layout'], 'checkLayout').doLast {
+		project.task([group: 'layout', description: 'Verifies that the project matches the configured layout.'], 'checkLayout').doLast {
 			List<String> issues = layoutPluginExtension.check(project.rootDir)
 			if (!issues.isEmpty()) {
 				throw new GradleException("Layout check failed. Run './gradlew applyLayout' to update:\n - " + issues.join("\n - "))
