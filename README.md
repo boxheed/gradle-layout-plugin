@@ -62,10 +62,16 @@ You can bootstrap an empty directory with a layout from the command line without
 
 ```sh
 # Inside an empty repository (uses current directory name as project name)
-curl -sSL https://raw.githubusercontent.com/boxheed/gradle-layout-plugin/master/bootstrap.sh | sh -s -- --name gradle-plugin
+curl -sSL https://raw.githubusercontent.com/boxheed/gradle-layout-plugin/master/bootstrap.sh | sh -s -- --name gradle-plugin-bootstrap
 
 # Or target a specific directory
-curl -sSL https://raw.githubusercontent.com/boxheed/gradle-layout-plugin/master/bootstrap.sh | sh -s -- --name gradle-plugin --dir my-plugin
+curl -sSL https://raw.githubusercontent.com/boxheed/gradle-layout-plugin/master/bootstrap.sh | sh -s -- --name gradle-plugin-bootstrap --dir my-plugin
 ```
 
 Run `sh bootstrap.sh --help` for all options (`--url`, `--remote`, `--overwrite`, `--dry-run`, `--plugin-version`, `--project-name`, `--project-group`, `--project-version`, `--project-description`, `--non-interactive`).
+
+## Bootstrap vs. Ongoing Layout Pattern
+
+Because `applyLayout` recreates missing files (even with `overwrite: false`), keep one-time scaffolding separate from your ongoing shared layout:
+- **Bootstrap layout** (e.g. `gradle-plugin-bootstrap`): composes the base layout (`"names": ["gradle-plugin"]`) and adds initial project files (`build.gradle`, `settings.gradle`, `.gitkeep` placeholders, `init-gradle.sh`) used only once when creating a new repository.
+- **Ongoing layout** (e.g. `gradle-plugin`): referenced in `build.gradle` / `gradle-plugin-opinion` for `applyLayout` and `checkLayout`, so deleted one-time files like `.gitkeep` or unused source directories are never recreated.

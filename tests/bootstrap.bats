@@ -64,7 +64,7 @@ teardown() {
     --dry-run
   [ "$status" -eq 0 ]
   [[ "$output" == *"com.fizzpod:gradle-layout-plugin:7.2.0"* ]]
-  [[ "$output" == *"settings.rootProject.name = 'custom\\'app'"* ]]
+  [[ "$output" == *"proj.extensions.getByName('layout').write(new File('${target}'))"* ]]
   [[ "$output" == *"proj.group = 'com.example'"* ]]
   [[ "$output" == *"proj.version = '1.0.0'"* ]]
   [[ "$output" == *"proj.description = 'Example project'"* ]]
@@ -166,9 +166,8 @@ EOF
   run cat "${args_log}"
   [[ "$output" == *"--no-daemon"* ]]
   [[ "$output" == *"--project-dir"* ]]
-  [[ "$output" == *"${target}"* ]]
   [[ "$output" == *"--init-script"* ]]
-  [[ "$output" == *"applyLayout"* ]]
+  [[ "$output" == *"bootstrapLayout"* ]]
 }
 
 @test "cleans up temp dir when gradle fails" {

@@ -11,7 +11,6 @@ NON_INTERACTIVE="false"
 PLUGIN_VERSION="${LAYOUT_PLUGIN_VERSION:-7.1.0}"
 GRADLE_VERSION="${LAYOUT_GRADLE_VERSION:-8.14}"
 PROJECT_NAME=""
-PROJECT_NAME_EXPLICIT="false"
 PROJECT_GROUP=""
 PROJECT_VERSION=""
 PROJECT_DESCRIPTION=""
@@ -116,7 +115,6 @@ parse_args() {
       --project-name)
         require_arg "$1" "${2:-}"
         PROJECT_NAME="$2"
-        PROJECT_NAME_EXPLICIT="true"
         shift 2
         ;;
       --project-group)
@@ -203,20 +201,31 @@ resolve_gradle_bin() {
     return 0
   fi
 
-  for tool in curl unzip; do
-    if ! command -v "${tool}" >/dev/null 2>&1; then
-      log_err "'${tool}' is required to download Gradle ${GRADLE_VERSION} when gradle is not installed."
-      exit 1
-    fi
-  done
+  if ! command -v curl >/dev/null 2>&1; then
+    log_err "'curl' is required to download Gradle ${GRADLE_VERSION} when gradle is not installed."
+    exit 1
+  fi
 
   mkdir -p "${CACHE_DIR}"
   zip_path="${CACHE_DIR}/gradle-${GRADLE_VERSION}-bin.zip"
   dist_url="https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip"
   printf '%s\n' "[layout-bootstrap] Downloading Gradle ${GRADLE_VERSION} to ${CACHE_DIR}..." >&2
   curl -sSLf "${dist_url}" -o "${zip_path}"
-  unzip -q -o "${zip_path}" -d "${CACHE_DIR}"
+  if command -v unzip >/dev/null 2>&1; then
+    unzip -q -o "${zip_path}" -d "${CACHE_DIR}"
+  elif command -v python3 >/dev/null 2>&1; then
+    python3 -m zipfile -e "${zip_path}" "${CACHE_DIR}"
+  elif command -v jar >/dev/null 2>&1; then
+    (cd "${CACHE_DIR}" && jar xf "${zip_path}")
+  else
+    rm -f "${zip_path}"
+    log_err "'unzip', 'python3', or 'jar' is required to extract Gradle ${GRADLE_VERSION}."
+    exit 1
+  fi
   rm -f "${zip_path}"
+  if [ -f "${cached_gradle}" ]; then
+    chmod +x "${cached_gradle}"
+  fi
 
   if [ ! -x "${cached_gradle}" ]; then
     log_err "Failed to install Gradle ${GRADLE_VERSION} into ${CACHE_DIR}."
@@ -236,10 +245,15 @@ generate_init_script() {
   esc_project_group="$(escape_groovy_string "${PROJECT_GROUP}")"
   esc_project_version="$(escape_groovy_string "${PROJECT_VERSION}")"
   esc_project_desc="$(escape_groovy_string "${PROJECT_DESCRIPTION}")"
+  esc_target_dir="$(escape_groovy_string "${TARGET_DIR}")"
   esc_remote="$(escape_groovy_string "${REMOTE_ROOT}")"
   esc_name="$(escape_groovy_string "${LAYOUT_NAME}")"
   esc_url="$(escape_groovy_string "${LAYOUT_URL}")"
   esc_plugin_ver="$(escape_groovy_string "${PLUGIN_VERSION}")"
+
+  cat >"${TMP_DIR}/settings.gradle" <<EOF
+rootProject.name = '${esc_project_name}'
+EOF
 
   cat >"${init_file}" <<EOF
 initscript {
@@ -256,14 +270,6 @@ initscript {
     }
 }
 
-gradle.settingsEvaluated { settings ->
-    if ('${PROJECT_NAME_EXPLICIT}' == 'true' || !new File(settings.settingsDir, 'settings.gradle').exists()) {
-        if ('${esc_project_name}') {
-            settings.rootProject.name = '${esc_project_name}'
-        }
-    }
-}
-
 gradle.rootProject { proj ->
     if ('${esc_project_group}') {
         proj.group = '${esc_project_group}'
@@ -275,7 +281,8 @@ gradle.rootProject { proj ->
         proj.description = '${esc_project_desc}'
     }
     proj.apply(plugin: com.fizzpod.gradle.plugins.layout.LayoutPlugin)
-    proj.layout {
+    def layoutExt = proj.extensions.getByName('layout')
+    layoutExt.with {
         overwrite ${OVERWRITE}
 EOF
 
@@ -289,7 +296,12 @@ EOF
     printf "        url '%s'\n" "${esc_url}" >>"${init_file}"
   fi
 
-  cat >>"${init_file}" <<'EOF'
+  cat >>"${init_file}" <<EOF
+    }
+    proj.tasks.register('bootstrapLayout') {
+        doLast {
+            proj.extensions.getByName('layout').write(new File('${esc_target_dir}'))
+        }
     }
 }
 EOF
@@ -320,7 +332,7 @@ main() {
 
   gradle_bin="$(resolve_gradle_bin)"
   log_info "Applying layout in ${TARGET_DIR} using ${gradle_bin}..."
-  "${gradle_bin}" --no-daemon --project-dir "${TARGET_DIR}" --init-script "${init_file}" applyLayout
+  "${gradle_bin}" --no-daemon --project-dir "${TMP_DIR}" --init-script "${init_file}" bootstrapLayout
   log_info "Layout applied successfully."
 }
 
