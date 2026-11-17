@@ -55,3 +55,17 @@ The plugin exposes the following tasks:
 - `applyLayout`: creates or updates (when `overwrite: true`) the specified layout. By default, if a file exists it will not overwrite it unless `overwrite: true` is configured globally or on the individual file entry.
 - `checkLayout`: verifies that configured directories and files exist and that `overwrite: true` files match their expected contents. Remote checks are skipped with a warning when Gradle is offline (`--offline` or `-Playout.offline=true`).
 - `createLayout`: deprecated alias for `applyLayout`.
+
+# Bootstrapping an Empty Repository
+
+You can bootstrap an empty directory with a layout from the command line without creating a `build.gradle` first:
+
+```sh
+# Inside an empty repository (uses current directory name as project name)
+curl -sSL https://raw.githubusercontent.com/boxheed/gradle-layout-plugin/master/bootstrap.sh | sh -s -- --name gradle-plugin
+
+# Or target a specific directory
+curl -sSL https://raw.githubusercontent.com/boxheed/gradle-layout-plugin/master/bootstrap.sh | sh -s -- --name gradle-plugin --dir my-plugin
+```
+
+Run `sh bootstrap.sh --help` for all options (`--url`, `--remote`, `--overwrite`, `--dry-run`, `--plugin-version`, `--project-name`, `--project-group`, `--project-version`, `--project-description`, `--non-interactive`).
